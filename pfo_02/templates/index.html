@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sistema de Tareas</title>
+</head>
+<body>
+    <h1>Sistema de Tareas</h1>
+
+    <h2>Registro</h2>
+    <input id="reg_user" placeholder="Usuario">
+    <input id="reg_pass" type="password" placeholder="Contraseña">
+    <button onclick="registrar()">Registrarse</button>
+
+    <h2>Login</h2>
+    <input id="log_user" placeholder="Usuario">
+    <input id="log_pass" type="password" placeholder="Contraseña">
+    <button onclick="login()">Iniciar sesión</button>
+
+    <p id="resultado"></p>
+
+    <script>
+        async function registrar() {
+            const res = await fetch("/registro", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    usuario: document.getElementById("reg_user").value,
+                    contraseña: document.getElementById("reg_pass").value
+                })
+            });
+
+            const data = await res.json();
+            document.getElementById("resultado").innerText = JSON.stringify(data);
+        }
+
+        async function login() {
+            const res = await fetch("/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    usuario: document.getElementById("log_user").value,
+                    contraseña: document.getElementById("log_pass").value
+                })
+            });
+
+            const data = await res.json();
+            document.getElementById("resultado").innerText = JSON.stringify(data);
+        }
+    </script>
+</body>
+</html>
