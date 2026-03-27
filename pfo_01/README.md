@@ -6,8 +6,9 @@ Ríos, Román | Comisión 3A
 
 ## Descripción
 
-Este proyecto consiste en la implementación de un sistema básico de comunicación cliente-servidor utilizando sockets en Python.  
-El servidor recibe mensajes de múltiples clientes, los almacena en una base de datos SQLite y responde con una confirmación que incluye la fecha y hora de recepción.
+Sistema cliente-servidor en Python usando sockets.  
+El servidor recibe mensajes de múltiples clientes, los guarda en SQLite y responde con un timestamp.  
+Se implementa un modelo **multicliente concurrente** mediante threading.
 
 ---
 
@@ -18,35 +19,28 @@ El servidor recibe mensajes de múltiples clientes, los almacena en una base de 
   - socket
   - sqlite3
   - datetime
-
-(No se requiere instalación adicional)
+  - threading
 
 ---
 
-## Estructura del Proyecto
+## Estructura
 
-- `servidor.py`: Implementa el servidor de sockets y la persistencia en base de datos.
-- `cliente.py`: Permite conectarse al servidor y enviar mensajes.
-- `mensajes.db`: Base de datos SQLite generada automáticamente.
+- `servidor.py`: Servidor TCP + SQLite + threading
+- `cliente.py`: Cliente interactivo por consola
+- `mensajes.db`: Base de datos
 
 ---
 
 ## Ejecución
 
-### 1. Iniciar el servidor
-
+### Servidor
 ```bash
 python servidor.py
 ```
 
-El servidor quedará escuchando en:
+Escucha en: `localhost:5000`
 
-localhost:5000
-
----
-
-### 2. Ejecutar el cliente (en otra terminal)
-
+### Cliente
 ```bash
 python cliente.py
 ```
@@ -55,50 +49,40 @@ python cliente.py
 
 ## Uso
 
-- El cliente se conecta al servidor.
-- Permite enviar múltiples mensajes.
-- Para finalizar, escribir:
+- Enviar mensajes desde el cliente
+- Escribir `éxito` para salir
+- Respuesta del servidor:
 
-éxito
-
-- El servidor responde a cada mensaje con:
-
-Mensaje recibido: <timestamp>
+`Mensaje recibido: <timestamp>`
 
 ---
 
 ## Base de Datos
 
-Se utiliza SQLite con una tabla llamada `mensajes`:
-
-- `id`: Identificador único
-- `contenido`: Mensaje enviado por el cliente
-- `fecha_envio`: Fecha y hora del mensaje
-- `ip_cliente`: Dirección IP del cliente
+Tabla `mensajes`:
+- id
+- contenido
+- fecha_envio
+- ip_cliente
 
 ---
 
-## Funcionalidades Implementadas
+## Funcionalidades
 
-- Servidor TCP en `localhost:5000`
-- Recepción de mensajes desde múltiples clientes
-- Persistencia en base de datos SQLite
-- Manejo de errores:
-  - Puerto ocupado
-  - Problemas con la base de datos
+- Servidor TCP en localhost:5000
+- Manejo concurrente de múltiples clientes (threading)
+- Persistencia en SQLite
+- Manejo de errores (socket y DB)
 - Respuesta automática al cliente
-- Cliente interactivo en consola
 
 ---
 
 ## Pruebas
 
-1. Ejecutar el servidor.
-2. Ejecutar uno o más clientes en distintas terminales.
-3. Enviar mensajes.
-4. Verificar:
-   - Respuesta del servidor
-   - Almacenamiento en `mensajes.db`
+1. Ejecutar servidor
+2. Abrir varios clientes
+3. Enviar mensajes simultáneamente
+4. Verificar respuestas y DB
 
 ---
 

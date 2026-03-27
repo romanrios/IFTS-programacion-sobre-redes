@@ -1,6 +1,7 @@
 import socket
 import sqlite3
 from datetime import datetime
+import threading  # Importamos threading para manejar múltiples clientes
 
 # -------------------------------
 # Configuración de la base de datos
@@ -31,6 +32,7 @@ def inicializar_db():
 # -------------------------------
 def guardar_mensaje(contenido, ip):
     try:
+        # Cada hilo abre su propia conexión (evita conflictos en SQLite)
         conn = sqlite3.connect("mensajes.db")
         cursor = conn.cursor()
 
@@ -51,6 +53,39 @@ def guardar_mensaje(contenido, ip):
 
 
 # -------------------------------
+# Manejar un cliente (HILO)
+# -------------------------------
+def manejar_cliente(cliente, direccion):
+    ip_cliente = direccion[0]
+    print(f"Conexión desde {ip_cliente}")
+
+    try:
+        while True:
+            mensaje = cliente.recv(1024).decode()
+
+            if not mensaje:
+                break
+
+            print(f"[{ip_cliente}] Mensaje: {mensaje}")
+
+            fecha = guardar_mensaje(mensaje, ip_cliente)
+
+            if fecha:
+                respuesta = f"Mensaje recibido: {fecha}"
+            else:
+                respuesta = "Error al guardar mensaje"
+
+            cliente.send(respuesta.encode())
+
+    except Exception as e:
+        print(f"Error con cliente {ip_cliente}:", e)
+
+    finally:
+        cliente.close()
+        print(f"Conexión cerrada con {ip_cliente}")
+
+
+# -------------------------------
 # Inicializar socket servidor
 # -------------------------------
 def inicializar_socket():
@@ -68,32 +103,20 @@ def inicializar_socket():
 
 
 # -------------------------------
-# Manejar conexiones
+# Aceptar conexiones (MULTICLIENTE)
 # -------------------------------
 def manejar_conexiones(servidor):
     while True:
         try:
             cliente, direccion = servidor.accept()
-            ip_cliente = direccion[0]
 
-            print(f"Conexión desde {ip_cliente}")
+            # Creamos un hilo por cada cliente conectado
+            thread = threading.Thread(
+                target=manejar_cliente,
+                args=(cliente, direccion)
+            )
 
-            while True:
-                mensaje = cliente.recv(1024).decode()
-
-                if not mensaje:
-                    break
-
-                print(f"Mensaje recibido: {mensaje}")
-
-                fecha = guardar_mensaje(mensaje, ip_cliente)
-
-                if fecha:
-                    respuesta = f"Mensaje recibido: {fecha}"
-                else:
-                    respuesta = "Error al guardar mensaje"
-
-                cliente.send(respuesta.encode())
+            thread.start()  # Ejecuta el cliente en paralelo
 
         except Exception as e:
             print("Error en conexión:", e)
