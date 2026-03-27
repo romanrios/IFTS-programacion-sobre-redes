@@ -86,6 +86,13 @@ Tabla `mensajes`:
 
 ---
 
+## Capturas
+
+![Capturas](https://romanrios.github.io/IFTS-programacion-sobre-redes/pfo_01/capturas/capturas_pfo1.jpg)
+
+
+---
+
 Instituto de Formación Técnica Superior N° 29  
 
 Tecnicatura Superior en Desarrollo de Software  
