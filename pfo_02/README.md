@@ -128,6 +128,16 @@ Tabla `usuarios`:
 
 ---
 
+## Capturas
+
+![Capturas](https://romanrios.github.io/IFTS-programacion-sobre-redes/pfo_02/capturas/capturas_pfo2_01.jpg)
+
+![Capturas](https://romanrios.github.io/IFTS-programacion-sobre-redes/pfo_02/capturas/capturas_pfo2_02.jpg)
+
+![Capturas](https://romanrios.github.io/IFTS-programacion-sobre-redes/pfo_02/capturas/capturas_pfo2_03.jpg)
+
+---
+
 Instituto de Formación Técnica Superior N° 29  
 
 Tecnicatura Superior en Desarrollo de Software  
