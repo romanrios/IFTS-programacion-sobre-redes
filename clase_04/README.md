@@ -29,6 +29,13 @@ python cliente_mejora.py
 
 ---
 
+## Capturas
+
+![Capturas](https://romanrios.github.io/IFTS-programacion-sobre-redes/clase_04/capturas/capturas_clase4.jpg)
+
+
+---
+
 Instituto de Formación Técnica Superior N° 29  
 
 Tecnicatura Superior en Desarrollo de Software  
