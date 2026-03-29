@@ -4,7 +4,7 @@ import threading
 HOST = "localhost"
 PORT = 1234
 
-# Diccionario con respuestas (normalizadas en minúsculas)
+# Diccionario con respuestas
 respuestas = {
     "¿Cuál es la capital de Francia?": "París",
     "¿Cuántos lados tiene un cuadrado?": "4",
