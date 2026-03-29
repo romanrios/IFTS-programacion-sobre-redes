@@ -6,9 +6,9 @@ PORT = 1234
 
 # Diccionario con respuestas (normalizadas en minúsculas)
 respuestas = {
-    "capital de francia": "París",
-    "cuantos lados tiene un cuadrado": "4",
-    "que lenguaje usamos": "Python",
+    "¿Cuál es la capital de Francia?": "París",
+    "¿Cuántos lados tiene un cuadrado?": "4",
+    "¿Qué lenguaje usamos?": "Python",
 }
 
 def manejar_cliente(conn, addr):
