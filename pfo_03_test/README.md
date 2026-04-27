@@ -4,60 +4,15 @@
 
 ```mermaid
 flowchart LR
-    subgraph Clients[Clientes]
-        M[Móvil]
-        W[Web]
-    end
+    C[Clientes (Web/Móvil)] --> LB[Balanceador\n(Nginx/HAProxy)]
+    
+    LB --> S[Servidores de Aplicación]
 
-    subgraph LB[Balanceador de carga]
-        N[Nginx / HAProxy]
-    end
+    S --> W[Workers\n(Pool de hilos)]
+    S --> MQ[RabbitMQ]
 
-    subgraph App[Servidores de aplicación]
-        S1[Servidor A]
-        S2[Servidor B]
-        S3[Servidor C]
-    end
-
-    subgraph Workers[Workers]
-        WK1[Worker 1\nPool de hilos]
-        WK2[Worker 2\nPool de hilos]
-        WK3[Worker 3\nPool de hilos]
-    end
-
-    subgraph MQ[Mensajería]
-        R[RabbitMQ]
-    end
-
-    subgraph Data[Persistencia]
-        P[(PostgreSQL)]
-        S[(S3)]
-    end
-
-    M --> N
-    W --> N
-    N --> S1
-    N --> S2
-    N --> S3
-
-    S1 <--> R
-    S2 <--> R
-    S3 <--> R
-
-    S1 --> WK1
-    S1 --> WK2
-    S2 --> WK2
-    S2 --> WK3
-    S3 --> WK1
-    S3 --> WK3
-
-    S1 --> P
-    S2 --> P
-    S3 --> P
-
-    S1 --> S
-    S2 --> S
-    S3 --> S
+    S --> DB[(PostgreSQL)]
+    S --> FS[(S3)]
 ```
 
 ### Qué representa
@@ -115,20 +70,3 @@ Ejemplo de respuesta:
 }
 ```
 
-## 4) Para subir a GitHub
-
-Estructura sugerida del repositorio:
-
-```text
-arquitectura-distribuida-sockets/
-├── README.md
-├── server.py
-├── worker.py
-├── client.py
-└── requirements.txt
-```
-
-## 5) Nota importante para tu entrega
-
-La parte de **RabbitMQ, PostgreSQL y S3** está reflejada en el diseño de arquitectura.
-El código incluido resuelve la parte pedida de **socket server + distribución a workers + cliente**.
