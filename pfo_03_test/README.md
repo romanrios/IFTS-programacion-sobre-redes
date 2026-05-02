@@ -4,18 +4,19 @@
 
 ```mermaid
 flowchart LR
-    C[Clientes (Web/Móvil)] --> LB[Balanceador\n(Nginx/HAProxy)]
-    
-    LB --> S[Servidores de Aplicación]
+    C["Clientes (Web/Móvil)"] --> LB["Balanceador<br/>(Nginx/HAProxy)"]
 
-    S --> W[Workers\n(Pool de hilos)]
-    S --> MQ[RabbitMQ]
+    LB --> S["Servidores de Aplicación"]
 
-    S --> DB[(PostgreSQL)]
-    S --> FS[(S3)]
+    S --> W["Workers<br/>(Pool de hilos)"]
+    S --> MQ["RabbitMQ"]
+
+    S --> DB[("PostgreSQL")]
+    S --> FS[("S3")]
 ```
 
 ### Qué representa
+
 - **Clientes**: entran por HTTP/WebSocket o por socket según el caso.
 - **Balanceador**: reparte peticiones entre varios servidores de aplicación.
 - **Servidores**: reciben tareas, las enrutan y coordinan el trabajo.
@@ -26,17 +27,21 @@ flowchart LR
 ## 2) Ejecución del ejemplo
 
 Este ejemplo implementa:
+
 - un **servidor TCP** que recibe tareas por socket,
 - un **worker TCP** que procesa tareas,
 - un **cliente TCP** que envía tareas y recibe resultados.
 
 ### Levantar el sistema
+
 1. Abrir una terminal y ejecutar el servidor:
+
    ```bash
    python server.py
    ```
 
 2. Abrir una o más terminales y ejecutar workers:
+
    ```bash
    python worker.py --name worker-1
    python worker.py --name worker-2
@@ -52,6 +57,7 @@ Este ejemplo implementa:
 El protocolo usa JSON sobre TCP con una línea por mensaje.
 
 Ejemplo de tarea:
+
 ```json
 {
   "task_id": "uuid",
@@ -61,6 +67,7 @@ Ejemplo de tarea:
 ```
 
 Ejemplo de respuesta:
+
 ```json
 {
   "task_id": "uuid",
@@ -69,4 +76,3 @@ Ejemplo de respuesta:
   "result": 120
 }
 ```
-
