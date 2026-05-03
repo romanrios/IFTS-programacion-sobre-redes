@@ -2,38 +2,20 @@
 
 ## 1) Diagrama del sistema
 
-```
-                       ┌──────────────────────┐
-                       │     Clientes         │
-                       │ (Web / Mobile Apps)  │
-                       └─────────┬────────────┘
-                                 │
-                                 ▼
-                      ┌──────────────────────┐
-                      │  Balanceador de Carga│
-                      │   (Nginx / HAProxy)  │
-                      └──────────┬───────────┘
-                                 │
-            ┌────────────────────┼──────────────────────┐
-            ▼                    ▼                      ▼
-   ┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐
-   │ Servidor Worker │   │ Servidor Worker │   │ Servidor Worker │
-   │   (Pool Hilos)  │   │   (Pool Hilos)  │   │   (Pool Hilos)  │
-   └────────┬────────┘   └────────┬────────┘   └────────┬────────┘
-            │                     │                     │
-            └──────────┬──────────┴──────────┬──────────┘
-                       ▼                     ▼
-               ┌──────────────────────────────────┐
-               │         Cola de Mensajes         │
-               │           (RabbitMQ)             │
-               └──────────────┬───────────────────┘
-                              │
-         ┌────────────────────┼────────────────────┐
-         ▼                    ▼                    ▼
-┌─────────────────┐  ┌──────────────────┐  ┌──────────────────┐
-│ PostgreSQL DB   │  │  Almacenamiento  │  │  Otros Servicios │
-│ (Datos estruct.)│  │  S3 (archivos)   │  │  (Opcional)      │
-└─────────────────┘  └──────────────────┘  └──────────────────┘
+```mermaid
+graph TD
+    A["Clientes (Web / Mobile)"] --> B["Balanceador de Carga (Nginx / HAProxy)"]
+
+    B --> C1["Servidor 1 (Worker Pool)"]
+    B --> C2["Servidor 2 (Worker Pool)"]
+    B --> C3["Servidor N (Worker Pool)"]
+
+    C1 --> D["RabbitMQ"]
+    C2 --> D
+    C3 --> D
+
+    D --> E["PostgreSQL (Base de Datos)"]
+    D --> F["S3 (Almacenamiento de Archivos)"]
 ```
 
 ### Qué representa
