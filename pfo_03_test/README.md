@@ -2,17 +2,38 @@
 
 ## 1) Diagrama del sistema
 
-```mermaid
-flowchart LR
-    C["Clientes (Web/Móvil)"] --> LB["Balanceador<br/>(Nginx/HAProxy)"]
-
-    LB --> S["Servidores de Aplicación"]
-
-    S --> W["Workers<br/>(Pool de hilos)"]
-    S --> MQ["RabbitMQ"]
-
-    S --> DB[("PostgreSQL")]
-    S --> FS[("S3")]
+```
+                       ┌──────────────────────┐
+                       │     Clientes         │
+                       │ (Web / Mobile Apps)  │
+                       └─────────┬────────────┘
+                                 │
+                                 ▼
+                      ┌──────────────────────┐
+                      │  Balanceador de Carga│
+                      │   (Nginx / HAProxy)  │
+                      └──────────┬───────────┘
+                                 │
+            ┌────────────────────┼──────────────────────┐
+            ▼                    ▼                      ▼
+   ┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐
+   │ Servidor Worker │   │ Servidor Worker │   │ Servidor Worker │
+   │   (Pool Hilos)  │   │   (Pool Hilos)  │   │   (Pool Hilos)  │
+   └────────┬────────┘   └────────┬────────┘   └────────┬────────┘
+            │                     │                     │
+            └──────────┬──────────┴──────────┬──────────┘
+                       ▼                     ▼
+               ┌──────────────────────────────────┐
+               │         Cola de Mensajes         │
+               │           (RabbitMQ)             │
+               └──────────────┬───────────────────┘
+                              │
+         ┌────────────────────┼────────────────────┐
+         ▼                    ▼                    ▼
+┌─────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│ PostgreSQL DB   │  │  Almacenamiento  │  │  Otros Servicios │
+│ (Datos estruct.)│  │  S3 (archivos)   │  │  (Opcional)      │
+└─────────────────┘  └──────────────────┘  └──────────────────┘
 ```
 
 ### Qué representa
