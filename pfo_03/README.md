@@ -1,31 +1,171 @@
-# Programación sobre Redes - PFO 3: Rediseño como Sistema Distribuido (Cliente-Servidor)
+# PFO 3 - Sistema Distribuido de Gestión de Tareas
 
-Ríos, Román | Comisión 3A
+## Descripción
+
+Rediseño distribuido del sistema de gestión de tareas del PFO 2 utilizando sockets TCP.
+
+La arquitectura implementa:
+
+- Cliente TCP
+- Servidor principal
+- Balanceo Round Robin
+- Workers concurrentes
+- Pool de hilos
+- Persistencia SQLite
+- Arquitectura distribuida
 
 ---
 
-## Objetivos
+# Arquitectura
+
+```mermaid
+graph TD
+
+    A[Clientes Web / Mobile / Desktop]
+
+    B[Nginx / HAProxy]
+
+    C[Servidor Principal TCP]
+
+    D1[Worker 1 - Pool de Hilos]
+    D2[Worker 2 - Pool de Hilos]
+    D3[Worker N - Pool de Hilos]
+
+    E[RabbitMQ]
+
+    F[(PostgreSQL)]
+    G[(Amazon S3)]
+
+    A --> B
+
+    B --> C
+
+    C --> D1
+    C --> D2
+    C --> D3
+
+    D1 --> E
+    D2 --> E
+    D3 --> E
+
+    E --> F
+    E --> G
+```
+
+---
+
+# Estructura
+
+```text
+pfo_03/
+│
+├── client.py
+├── server.py
+├── worker.py
+├── database.py
+├── init_db.py
+├── requirements.txt
+└── README.md
+```
+
+---
+
+# Ejecución
+
+## 1. Inicializar base de datos
+
+```bash
+python init_db.py
+```
+
+---
+
+## 2. Iniciar servidor principal
+
+```bash
+python server.py
+```
+
+---
+
+## 3. Iniciar workers
+
+```bash
+python worker.py --name worker-1
+```
+
+```bash
+python worker.py --name worker-2
+```
+
+---
+
+## 4. Ejecutar cliente
+
+```bash
+python client.py
+```
+
+---
+
+# Funcionalidades
+
+- Registro de usuarios
+- Login
+- Crear tareas
+- Ver tareas
+- Eliminar tareas
+- Distribución de requests
+- Workers concurrentes
+- Sistema multicliente
+- Arquitectura distribuida
+
+---
+
+# Tecnologías
+
+- Python 3
+- socket
+- threading
+- concurrent.futures
+- sqlite3
+- json
+
+---
 
 
-Transformar el sistema en una arquitectura distribuida usando sockets.
+# Explicación del funcionamiento del sistema
 
-Diseñar un diagrama que incluya:
+Este proyecto es una evolución del sistema de gestión de tareas desarrollado anteriormente, pero rediseñado con una arquitectura distribuida utilizando sockets TCP en Python.
 
-- Clientes (móviles, web).
-- Balanceador de carga (Nginx/HAProxy).
-- Servidores workers (cada uno con su pool de hilos).
-- Cola de mensajes (RabbitMQ) para comunicación entre servidores.
-- Almacenamiento distribuido (PostgreSQL, S3).
+El sistema está compuesto por:
 
-Implementar en Python:
+- un cliente TCP,
+- un servidor principal,
+- múltiples workers,
+- y una base de datos SQLite.
 
-- Un servidor que reciba tareas por socket y las distribuya a workers.
-- Un cliente que envíe tareas y reciba resultados.
+Cuando un cliente realiza una solicitud, el servidor principal la recibe y la distribuye entre los workers utilizando Round Robin para balancear la carga.
 
-Entregables:
+Cada worker utiliza un pool de hilos (ThreadPoolExecutor) para poder procesar múltiples solicitudes al mismo tiempo de manera concurrente.
 
-- Diagrama del sistema.
-- Código del servidor y cliente en repositorio de Github
+La comunicación entre los componentes se realiza mediante sockets TCP y mensajes en formato JSON.
+
+El objetivo principal del proyecto fue aplicar conceptos de:
+
+- arquitectura cliente-servidor,
+- concurrencia,
+- programación multihilo,
+- balanceo de carga,
+- sockets TCP,
+- y sistemas distribuidos.
+
+
+---
+
+# Autor
+
+Román Ríos
 
 ---
 

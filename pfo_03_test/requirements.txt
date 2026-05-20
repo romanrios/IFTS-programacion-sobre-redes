@@ -1,1 +1,0 @@
-# Este ejemplo usa solo la librería estándar de Python.
