@@ -1,16 +1,17 @@
-# PFO 3 - Sistema Distribuido Cliente-Servidor
+# PFO 3 - Sistema Distribuido de Gestión de Tareas
 
 ## Descripción
 
-Sistema distribuido implementado en Python utilizando sockets TCP.
+Rediseño distribuido del sistema de gestión de tareas del PFO 2 utilizando sockets TCP.
 
-La arquitectura incluye:
+La arquitectura implementa:
 
 - Cliente TCP
 - Servidor principal
+- Balanceo Round Robin
 - Workers concurrentes
-- Distribución de tareas
 - Pool de hilos
+- Persistencia SQLite
 - Arquitectura distribuida
 
 ---
@@ -21,6 +22,7 @@ La arquitectura incluye:
 graph TD
 
     A[Clientes Web / Mobile / Desktop]
+
     B[Nginx / HAProxy]
 
     C[Servidor Principal TCP]
@@ -30,10 +32,12 @@ graph TD
     D3[Worker N - Pool de Hilos]
 
     E[RabbitMQ]
+
     F[(PostgreSQL)]
     G[(Amazon S3)]
 
     A --> B
+
     B --> C
 
     C --> D1
@@ -58,6 +62,8 @@ pfo_03/
 ├── client.py
 ├── server.py
 ├── worker.py
+├── database.py
+├── init_db.py
 ├── requirements.txt
 └── README.md
 ```
@@ -66,7 +72,15 @@ pfo_03/
 
 # Ejecución
 
-## 1. Iniciar servidor
+## 1. Inicializar base de datos
+
+```bash
+python init_db.py
+```
+
+---
+
+## 2. Iniciar servidor principal
 
 ```bash
 python server.py
@@ -74,7 +88,7 @@ python server.py
 
 ---
 
-## 2. Iniciar workers
+## 3. Iniciar workers
 
 ```bash
 python worker.py --name worker-1
@@ -86,56 +100,25 @@ python worker.py --name worker-2
 
 ---
 
-## 3. Ejecutar cliente
-
-### Factorial
+## 4. Ejecutar cliente
 
 ```bash
-python client.py --operation factorial --value 5
-```
-
-### Fibonacci
-
-```bash
-python client.py --operation fibonacci --value 10
-```
-
-### Suma
-
-```bash
-python client.py --operation add --value "[1,2,3,4]"
-```
-
-### Multiplicación
-
-```bash
-python client.py --operation multiply --value "[2,3,4]"
-```
-
-### Upper
-
-```bash
-python client.py --operation upper --value hola
-```
-
-### Reverse
-
-```bash
-python client.py --operation reverse --value hola
+python client.py
 ```
 
 ---
 
 # Funcionalidades
 
-- Comunicación mediante sockets TCP
-- Distribución de tareas entre workers
-- Round Robin
+- Registro de usuarios
+- Login
+- Crear tareas
+- Ver tareas
+- Eliminar tareas
+- Distribución de requests
 - Workers concurrentes
-- Pool de hilos
-- JSON como protocolo
-- Arquitectura distribuida
 - Sistema multicliente
+- Arquitectura distribuida
 
 ---
 
@@ -145,8 +128,8 @@ python client.py --operation reverse --value hola
 - socket
 - threading
 - concurrent.futures
+- sqlite3
 - json
-- uuid
 
 ---
 

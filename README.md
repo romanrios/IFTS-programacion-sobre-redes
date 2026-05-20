@@ -1,138 +1,20 @@
-# PFO 3 - Sistema Distribuido de Gestión de Tareas
+# Programación sobre Redes
 
-## Descripción
-
-Rediseño distribuido del sistema de gestión de tareas del PFO 2 utilizando sockets TCP.
-
-La arquitectura implementa:
-
-- Cliente TCP
-- Servidor principal
-- Balanceo Round Robin
-- Workers concurrentes
-- Pool de hilos
-- Persistencia SQLite
-- Arquitectura distribuida
+Ríos, Román | Comisión 3A
 
 ---
 
-# Arquitectura
+| Enlaces | |
+|---|---|
+| Ejercicios Clase 1 | [Ver ↗](https://github.com/romanrios/IFTS-programacion-sobre-redes/tree/main/clase_01) |
+| PFO 1: Chat Cliente-Servidor con Sockets | [Ver ↗](https://github.com/romanrios/IFTS-programacion-sobre-redes/tree/main/pfo_01) |
+| PFO 2: Sistema de Gestión de Tareas | [Ver ↗](https://github.com/romanrios/IFTS-programacion-sobre-redes/tree/main/pfo_02) |
 
-```mermaid
-graph TD
-
-    A[Clientes Web / Mobile / Desktop]
-
-    B[Nginx / HAProxy]
-
-    C[Servidor Principal TCP]
-
-    D1[Worker 1 - Pool de Hilos]
-    D2[Worker 2 - Pool de Hilos]
-    D3[Worker N - Pool de Hilos]
-
-    E[RabbitMQ]
-
-    F[(PostgreSQL)]
-    G[(Amazon S3)]
-
-    A --> B
-
-    B --> C
-
-    C --> D1
-    C --> D2
-    C --> D3
-
-    D1 --> E
-    D2 --> E
-    D3 --> E
-
-    E --> F
-    E --> G
-```
 
 ---
 
-# Estructura
+Instituto de Formación Técnica Superior N° 29  
 
-```text
-pfo_03/
-│
-├── client.py
-├── server.py
-├── worker.py
-├── database.py
-├── init_db.py
-├── requirements.txt
-└── README.md
-```
+Tecnicatura Superior en Desarrollo de Software  
 
----
-
-# Ejecución
-
-## 1. Inicializar base de datos
-
-```bash
-python init_db.py
-```
-
----
-
-## 2. Iniciar servidor principal
-
-```bash
-python server.py
-```
-
----
-
-## 3. Iniciar workers
-
-```bash
-python worker.py --name worker-1
-```
-
-```bash
-python worker.py --name worker-2
-```
-
----
-
-## 4. Ejecutar cliente
-
-```bash
-python client.py
-```
-
----
-
-# Funcionalidades
-
-- Registro de usuarios
-- Login
-- Crear tareas
-- Ver tareas
-- Eliminar tareas
-- Distribución de requests
-- Workers concurrentes
-- Sistema multicliente
-- Arquitectura distribuida
-
----
-
-# Tecnologías
-
-- Python 3
-- socket
-- threading
-- concurrent.futures
-- sqlite3
-- json
-
----
-
-# Autor
-
-Román Ríos
+Año 2026
